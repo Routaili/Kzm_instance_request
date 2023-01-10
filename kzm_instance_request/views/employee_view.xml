@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <!-- Form view -->
+        <record id="employee_form_view_extend" model="ir.ui.view">
+            <field name="name">Employee form</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                        <button name="open_tree_view" class="oe_stat_button" icon="fa-list-alt"
+                                type="object">
+                            <div class="o_field_widget o_stat_info">
+                                <field name="nbre_instance_ids"  class="o_stat_value"/>
+                                <span class="o_stat_text">List Instances</span>
+                            </div>
+                        </button>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,46 @@
+
+<odoo>
+  <data>
+
+
+    <record model="ir.ui.view" id="odoo_version_list_view">
+      <field name="name">Périmètres</field>
+      <field name="model">odoo.perimeter</field>
+
+    </record>
+
+
+
+      <record model="ir.ui.view" id="odoo_version_form_view">
+        <field name="name">Périmètres</field>
+        <field name="model">odoo.perimeter</field>
+        <field name="arch" type="xml">
+
+        <form>
+            <group>
+               <field name="name" />
+            </group>
+        </form>
+      </field>
+    </record>
+
+
+
+
+
+
+
+      <record id="perimeter_action_window" model="ir.actions.act_window" >
+          <field name="name">Périmètres</field>
+          <field name="res_model">odoo.perimeter</field>
+          <field name="type">ir.actions.act_window</field>
+          <field name="view_mode">tree,form</field>
+      </record>
+
+<!--
+    <menuitem id="session_model_menu_action" parent="instances.menu_odoo_version"
+              name="Odoo Version"/>
+-->
+
+  </data>
+</odoo>

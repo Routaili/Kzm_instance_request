@@ -1,0 +1,280 @@
+<odoo>
+    <data>
+        <record id="kzm_instance_view_search" model="ir.ui.view">
+            <field name="name">Search by Designation , address , state</field>
+            <field name="model">kzm.instance.request</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="adress_ip"/>
+                    <field name="state"/>
+                    <field name="partner_id"/>
+                    <field name="tl_user_ids"/>
+                    <field name="perimeters_ids"/>
+                    <group expand="0" string="Group By">
+                        <filter
+                                name="Status"
+                                string="STATE"
+                                context="{'group_by': 'state'}"
+                        />
+                        <filter
+                                name="tl"
+                                string="TL"
+                                context="{'group_by': 'employee_id'}"
+                        />
+
+                        <filter
+                                name="Odoo versions"
+                                string="Odoo Versions"
+                                context="{'group_by': 'odoo_id'}"
+                        />
+                    </group>
+                </search>
+            </field>
+        </record>
+        <!-- explicit list view definition -->
+
+        <record model="ir.ui.view" id="kzm_instance_request_list_view">
+            <field name="name">kzm_instance_request list</field>
+            <field name="model">kzm.instance.request</field>
+            <field name="arch" type="xml">
+                <tree>
+
+                    <field name="create_uid"/>
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="tl_user_ids"/>
+                    <field name="perimeters_ids"/>
+                    <field name="treat_date"/>
+                    <field name="cpu"/>
+                    <field name="ram"/>
+                    <field name="disk"/>
+                    <field name="state"
+                           decoration-success="state == 'brouillon' or state == 'sounise'"
+                           decoration-info="state == 'en traitement' or state == 'traite'" widget="badge"
+                           optional="show" on_change="1" modifiers="{&quot;readonly&quot;: true}"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="kzm_instance_request_form_view">
+            <field name="name">kzm_instance_request list</field>
+            <field name="model">kzm.instance.request</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button string="Pour brouillon" type="object"
+                                attrs="{'invisible':['|',('state','=','brouillon'),('state','=','en traitement')]}"
+                                name="action_confirm" class="btn-primary"/>
+                        <button string="Pour soumise" type="object" name="action_done"
+                                attrs="{'invisible':[('state','!=','brouillon')]}" class="btn-primary"/>
+                        <button string="En traitement" type="object" name="action_draft"
+                                attrs="{'invisible':[('state','!=','sounise')]}" class="btn-primary"/>
+                        <button string="Traitee" type="object" name="action_processing"
+                                attrs="{'invisible':[('state','!=','en traitement')]}" class="btn-primary"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+
+                    <sheet>
+
+                        <div class="oe_title">
+                            <h1>
+                                <field name="reference" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group colspan="2" col="2">
+                            <group colspan="1" col="1">
+                                <field name="adress_ip" attrs="{'invisible':[('state','!=','traite')]}"/>
+                                <field name="url" attrs="{'readonly':[('state','=','traite')]}"/>
+                                <field name="partner_id" attrs="{'readonly':[('state','=','traite')]}"/>
+                                <field name="tl_user_ids" attrs="{'readonly':[('state','=','traite')]}"/>
+                                <field name="odoo_id" attrs="{'readonly':[('state','=','traite')]}"/>
+                                <field name="perimeters_ids" attrs="{'readonly':[('state','=','traite')]}"
+                                       widget="many2many_tags"/>
+                            </group>
+                            <group colspan="1" col="2">
+                                <field name="cpu" attrs="{'readonly':[('state','=','traite')]}"/>
+                                <field name="ram" attrs="{'readonly':[('state','=','traite')]}"/>
+                                <field name="disk" attrs="{'readonly':[('state','=','traite')]}"/>
+                            </group>
+                            <group colspan="1" col="2">
+                                <field name="name" required="True" attrs="{'readonly':[('state','=','traite')]}"/>
+                                <field name="state" attrs="{'readonly':[('state','=','traite')]}"/>
+                                <field name="employee_id" attrs="{'readonly':[('state','=','traite')]}"/>
+                                <field name="adress_employee" attrs="{'readonly':[('state','=','traite')]}"/>
+
+                            </group>
+                            <group colspan="1" col="2">
+                                <field name="num_perimetres" attrs="{'readonly':[('state','=','traite')]}"
+                                       readonly="1"/>
+                                <field name="limit_date" attrs="{'readonly':[('state','=','traite')]}"/>
+                                <field name="treat_date" attrs="{'readonly':[('state','=','tarite')]}"/>
+                                <field name="treat_duration" attrs="{'readonly':[('state','=','tarite')]}"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"></field>
+                        <field name="activity_ids"/>
+                        <field name="message_ids" widget="mail_thread"></field>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="partner_kanban_view" model="ir.ui.view">
+            <field name="name">res.partner.kanban</field>
+            <field name="model">kzm.instance.request</field>
+            <field name="arch" type="xml">
+                <kanban class="o_res_partner_kanban" default_groupby="state">
+                    <field name="name"/>
+                    <field name="adress_ip"/>
+                    <field name="state"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_global_click">
+                                <div class="oe_kanban_details">
+                                    <ul>
+                                        <li>
+                                            <field name="create_uid"/>
+                                        </li>
+                                        <li>
+                                            <field name="name"/>
+                                        </li>
+                                        <li>
+                                            <field name="adress_ip"/>
+                                        </li>
+                                        <li>
+                                            <field name="state"/>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        <record id="partner_gantt_view" model="ir.ui.view">
+            <field name="name">res.partner.gantt</field>
+            <field name="model">kzm.instance.request</field>
+            <field name="arch" type="xml">
+                <gantt color="id" disable_drag_drop="1" plan="0" delete="0"
+                       date_start="treat_date"
+                       date_stop="limit_date"
+
+                       decoration-danger="state=='brouillon'"
+                       decoration-info="state=='sounisse'"
+                       decoration-success="state=='en traitement'"
+                       decoration-warning="state=='traite'"
+
+                       default_group_by="create_uid">
+                    <field name="name"/>
+                    <field name="state"/>
+                </gantt>
+            </field>
+        </record>
+
+        <record id="partner_pivot_view" model="ir.ui.view">
+            <field name="name">res.partner.pivot</field>
+            <field name="model">kzm.instance.request</field>
+            <field name="arch" type="xml">
+                <pivot string="durée de traitement">
+                    <field name="treat_duration"/>
+                </pivot>
+            </field>
+        </record>
+        <record id="partner_graph_view" model="ir.ui.view">
+            <field name="name">res.partner.graph</field>
+            <field name="model">kzm.instance.request</field>
+            <field name="arch" type="xml">
+                <graph string="nombre de demande par date de création">
+                    <field name="treat_date"/>
+                </graph>
+            </field>
+        </record>
+        <!-- actions opening views on models -->
+
+        <!--    <record model="ir.actions.act_windows" id="kzm_instance_request_action_window">-->
+        <!--      <field name="name">kzm_instance_request window</field>-->
+        <!--      <field name="res_model">instance.request</field>-->
+        <!--      <field name="view_model">tree, form</field>-->
+        <!--     </record>-->
+        <record id="kzm_instance_request_action_window" model="ir.actions.act_window">
+            <field name="name">instance</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">kzm.instance.request</field>
+            <field name="view_mode">tree,form,activity,kanban,gantt,pivot,graph</field>
+        </record>
+
+        <record id="open_view_odoo_tree" model="ir.actions.act_window">
+            <field name="name">Instance</field>
+            <field name="res_model">kzm.instance.request</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">['|',('state','=','sounise'),('state','=','en traitement')]]</field>
+
+        </record>
+        <!--      permet d'ajouter une action-->
+        <record id="action_server_backup" model="ir.actions.server">
+            <field name="name">Traitée</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_kzm_instance_request"/>
+            <field name="binding_model_id" ref="model_kzm_instance_request"/>
+            <field name="state">code</field>
+            <field name="code">records.test_responsable()</field>
+        </record>
+        <!-- Action  scheduled -->
+        <record id="submitted_cron" model="ir.cron">
+            <field name="name">Planifier</field>
+            <field name="model_id" ref="model_kzm_instance_request"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">minutes</field>
+            <field name="type">ir.actions.server</field>
+            <field name="numbercall">-1</field>
+            <field name="code">model.test_planifie()</field>
+            <field name="state">code</field>
+
+        </record>
+
+
+        <!--    &lt;!&ndash; Top menu item &ndash;&gt;-->
+
+        <!--    <menuitem name="kzm_instance_request" id="menu_root"/>-->
+
+        <!--    &lt;!&ndash; menu categories &ndash;&gt;-->
+
+        <!--    <menuitem name="Menu 1" id="kzm_instance_request_menu_1" parent="menu_root"/>-->
+        <!--    &lt;!&ndash;-->
+        <!--    <menuitem name="Menu 2" id="kzm_instance_request.menu_2" parent="kzm_instance_request.menu_root"/>-->
+
+        <!--    &ndash;&gt;-->
+        <!--    &lt;!&ndash; actions &ndash;&gt;-->
+
+        <!--    <menuitem name="List" id="kzm_instance_request_list" parent="kzm_instance_request_menu_1"-->
+        <!--              action="kzm_instance_request_action_window"/>-->
+        <!--    &lt;!&ndash;-->
+        <!--    <menuitem name="Server to list" id="kzm_instance_request" parent="kzm_instance_request.menu_2"-->
+        <!--              action="kzm_instance_request.action_server"/>-->
+        -->
+        <menuitem id="test_menu_root" name="Intance" web_icon="kzm_instance_request,static/description/icon_ODOO.png">
+            <menuitem id="session_model_menu_action" action="kzm_instance_request_action_window"
+                      groups="kzm_instance_request.group_kzm_instance_request_user" name="Mes demandes"/>
+        </menuitem>
+        <menuitem id="model1_menu1_action" action="kzm_instance_request.odoo_version_action_window"
+                  parent="test_menu_root" name="odoo version"/>
+        <menuitem id="model2_menu2_action" parent="test_menu_root" name="Responsables">
+            <menuitem id="model_odo" action="kzm_instance_request.open_view_odoo_tree" name="À valider"
+                      groups="kzm_instance_request.group_kzm_instance_request_responsible" sequence="10"/>
+            <menuitem id="model2_odoo" action="kzm_instance_request.kzm_instance_request_action_window" name="Toutes"
+                      groups="kzm_instance_request.group_kzm_instance_request_responsible" sequence="10"/>
+        </menuitem>
+        <menuitem id="model3_menu3_action" action="kzm_instance_request.odoo_version_action_window"
+                  parent="test_menu_root" groups="kzm_instance_request.group_kzm_instance_request_user" name="Analyse"/>
+        <menuitem id="model4_menu4_action" action="kzm_instance_request.odoo_version_action_window"
+                  parent="test_menu_root" groups="kzm_instance_request.group_kzm_instance_request_admin"
+                  name="Configuration"/>
+        <menuitem id="model5_menu5_action" action="kzm_instance_request.perimeter_action_window" parent="test_menu_root"
+                  groups="kzm_instance_request.group_kzm_instance_request_admin" name="Périmètres"/>
+
+    </data>
+</odoo>

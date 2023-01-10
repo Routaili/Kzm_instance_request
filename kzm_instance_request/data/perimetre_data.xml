@@ -1,0 +1,23 @@
+
+<odoo>
+    <data noupdate="1">
+
+        <record id="primetre_Achats" model="odoo.perimeter">
+            <field name="name">Achats</field>
+        </record>
+        <record id="primetre_Ventes" model="odoo.perimeter">
+            <field name="name">Ventes</field>
+        </record>
+        <record id="primetre_Documents" model="odoo.perimeter">
+            <field name="name">Documents</field>
+        </record>
+        <record id="primetre_Documents" model="odoo.perimeter">
+            <field name="name">Documents</field>
+        </record>
+        <record id="primetre_Projets" model="odoo.perimeter">
+            <field name="name">Projets</field>
+        </record><record id="primetre_Agriculture" model="odoo.perimeter">
+            <field name="name">Agriculture</field>
+        </record>
+    </data>
+</odoo>
