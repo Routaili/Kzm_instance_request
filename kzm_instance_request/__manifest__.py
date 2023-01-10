@@ -37,8 +37,8 @@
         'views/odoo_version_view.xml',
         'views/instance_request_view.xml',
         'wizards/bons_commande.xml',
-        'report/report_view_instance.xml',
         'report/report_instance.xml',
+        'report/report_action.xml',
     ],
     # only loaded in demonstration mode
     # 'demo': [
