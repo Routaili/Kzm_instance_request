@@ -1,4 +1,5 @@
 from odoo import models, fields, api, _
+from odoo.exceptions import ValidationError
 
 
 class Bon_commande(models.TransientModel):
@@ -8,7 +9,7 @@ class Bon_commande(models.TransientModel):
     ram = fields.Char(string='RAM')
     disk = fields.Char(string='DISK')
     limit_date = fields.Date(string='Processing deadline')
-    tl = fields.Many2one(comodel_name='hr.employee', string="Employees")
+    employee_id = fields.Many2one(comodel_name='hr.employee', string="Employees")
     instance_id = fields.Many2one(comodel_name='kzm.instance.request', string="Instance id", invisible=True)
 
     def default_sales(self):
@@ -25,7 +26,7 @@ class Bon_commande(models.TransientModel):
                 'cpu': self.cpu,
                 'disk': self.disk,
                 'limit_date': self.limit_date,
-                'tl_id': self.tl.id,
+                'employee_id': self.employee_id.id,
                 'sale_order_id': x.id
             })
             ids_rec.append(val.id)

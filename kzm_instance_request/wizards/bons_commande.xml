@@ -16,7 +16,7 @@
                         <field name="cpu"/>
                         <field name="ram"/>
                         <field name="disk"/>
-                        <field name="tl"/>
+                        <field name="employee_id"/>
                         <field name="limit_date"/>
                     </group>
                     <group>

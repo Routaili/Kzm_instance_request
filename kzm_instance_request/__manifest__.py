@@ -24,9 +24,9 @@
 
     # always loaded
     'data': [
-        'data/activity.xml',
         'security/security.xml',
         'security/ir.model.access.csv',
+        'data/activity.xml',
         'data/seq_data.xml',
         'data/instance_data.xml',
         'data/odoo_version_data.xml',
@@ -36,9 +36,9 @@
         'views/perimetre_view.xml',
         'views/odoo_version_view.xml',
         'views/instance_request_view.xml',
-        'wizards/bons_commande.xml',
         'report/report_instance.xml',
         'report/report_action.xml',
+        'wizards/bons_commande.xml',
     ],
     # only loaded in demonstration mode
     # 'demo': [

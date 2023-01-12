@@ -35,8 +35,7 @@ class instance_request(models.Model):
     perimeters_ids = fields.Many2many(string="Perimeters", comodel_name='odoo.perimeter')
     adress_employee = fields.Many2one(related="employee_id.address_id", string='adress employee')
     num_perimetres = fields.Integer(string="Numero des partener", compute="calc_partner")
-    purchase_orders = fields.Many2many(comodel_name='sale.order', string="Purchase Order", invisible=True)
-
+    sale_order_id = fields.Many2one(comodel_name='sale.order', string="Sale Order")
     def calc_partner(self):
         self.num_perimetres = len(self.perimeters_ids)
 
