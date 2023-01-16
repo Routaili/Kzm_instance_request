@@ -57,7 +57,7 @@
             </field>
         </record>
 
-        <record model="ir.ui.view" id="kzm_instance_request_form_view">
+        <record model="ir.ui.view" id="kzm_instance_request.form_view">
             <field name="name">kzm_instance_request list</field>
             <field name="model">kzm.instance.request</field>
             <field name="arch" type="xml">
