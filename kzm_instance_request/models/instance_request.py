@@ -36,6 +36,8 @@ class instance_request(models.Model):
     adress_employee = fields.Many2one(related="employee_id.address_id", string='adress employee')
     num_perimetres = fields.Integer(string="Numero des partener", compute="calc_partner")
     sale_order_id = fields.Many2one(comodel_name='sale.order', string="Sale Order")
+
+    @api.depends('num_perimetres')
     def calc_partner(self):
         self.num_perimetres = len(self.perimeters_ids)
 

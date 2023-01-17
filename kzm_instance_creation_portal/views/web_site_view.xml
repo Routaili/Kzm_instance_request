@@ -1,13 +1,75 @@
 <odoo>
 
-    <record id="portal_action_form" model="website.menu">
-        <field name="name">Create Instance</field>
-        <field name="url">/create_webform</field>
+    <!-- list instance -->
+
+    <template id="list_instance_portal" name="My Instances">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Instances</t>
+            </t>
+            <t t-if="instances" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th class="text-center">Name</th>
+                        <th class="text-end">Customer</th>
+                        <th class="text-end">Employee</th>
+                        <th class="text-center">Odoo Version</th>
+                        <th class="text-end">Purchase order</th>
+                        <th class="text-end">CPU</th>
+                        <th class="text-end">RAM</th>
+                        <th class="text-end">DISK</th>
+                        <th class="text-end">State</th>
+                    </tr>
+                </thead>
+                <t t-foreach="instances" t-as="instance">
+                    <tr>
+                        <td class="text-end">
+                            <a t-attf-href="/form_create_instance/#{instance.id}">
+                                <span t-field="instance.reference"/>
+                            </a>
+                        </td>
+                        <td class="text-end">
+                            <span t-field="instance.partner_id.name"/>
+                        </td>
+                        <td class="text-end">
+                            <span t-field="instance.tl_id.name"/>
+                        </td>
+                        <td class="text-end">
+                            <span t-field="instance.odoo_id.name"/>
+                        </td>
+                        <td class="text-end">
+                            <span t-field="instance.sale_id.name"/>
+                        </td>
+
+                        <td class="text-end">
+                            <span t-field="instance.cpu"/>
+                        </td>
+                        <td class="text-end">
+                            <span t-field="instance.ram"/>
+                        </td>
+                        <td class="text-end">
+                            <span t-field="instance.disk"/>
+                        </td>
+                        <td class="text-end">
+                            <span t-field="instance.state"/>
+                        </td>
+                    </tr>
+                </t>
+            </t>
+            <p t-else="">There are currently no instance for your account.</p>
+        </t>
+    </template>
+
+    <!-- Menu, form and message of creation instance -->
+    <record id="menu_Form" model="website.menu">
+        <field name="name">Create instance</field>
+        <field name="url">/form_create_instance</field>
         <field name="parent_id" ref="website.main_menu"/>
-        <field name="sequence">55</field>
+        <field name="sequence" type="int">50</field>
     </record>
 
-    <template id="create_instance" name="Create Instance">
+    <template id="form_instance_portal" name="Create instance">
         <t t-call="website.layout">
             <div id="wrap">
                 <section class="s_title parallax s_parallax_is_fixed bg-black-50 pt24 pb24" data-vcss="001"
@@ -19,7 +81,6 @@
                         <h1>Create instance</h1>
                     </div>
                 </section>
-
                 <div class="oe_structure">
                     <div class="container s_allow_columns">
                         <div class="row">
@@ -27,26 +88,89 @@
                                 <section class="s_website_form" data-vcss="001" data-snippet="s_website_form">
                                     <div class="container">
                                         <form role="form" action="/create/instance" method="POST">
-                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                            <input type="hidden" name="csrf_token"
+                                                   t-att-value="request.csrf_token()"/>
                                             <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom"
                                                  data-type="char" data-name="Field">
                                                 <div class="row s_col_no_resize s_col_no_bgcolor">
                                                     <label class="col-form-label col-sm-auto s_website_form_label"
                                                            style="width: 200px"
-                                                           for="name">
-                                                        <span class="s_website_form_label_content">Désignation:</span>
+                                                           for="cpu">
+                                                        <span class="s_website_form_label_content">CPU:</span>
                                                     </label>
                                                     <div class="col-sm">
-                                                        <input id="name"
+                                                        <input id="cpu"
                                                                type="text"
-                                                               t-att-value="name"
-                                                               placeholder="Designation"
+                                                               t-att-value="cpu"
+                                                               placeholder="cpu"
                                                                class="form-control s_website_form_input"
                                                                required="required"
-                                                               name="name"/>
+                                                               name="cpu"/>
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom"
+                                                 data-type="char" data-name="Field">
+                                                <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                    <label class="col-form-label col-sm-auto s_website_form_label"
+                                                           style="width: 200px"
+                                                           for="ram">
+                                                        <span class="s_website_form_label_content">RAM:</span>
+                                                    </label>
+                                                    <div class="col-sm">
+                                                        <input id="ram"
+                                                               type="text"
+                                                               t-att-value="ram"
+                                                               placeholder="ram"
+                                                               class="form-control s_website_form_input"
+                                                               required="required"
+                                                               name="ram"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom"
+                                                 data-type="char" data-name="Field">
+                                                <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                    <label class="col-form-label col-sm-auto s_website_form_label"
+                                                           style="width: 200px"
+                                                           for="disk">
+                                                        <span class="s_website_form_label_content">Disk:</span>
+                                                    </label>
+                                                    <div class="col-sm">
+                                                        <input id="disk"
+                                                               type="text"
+                                                               t-att-value="disk"
+                                                               placeholder="disk"
+                                                               class="form-control s_website_form_input"
+                                                               required="required"
+                                                               name="disk"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom"
+                                                 data-type="char" data-name="Field">
+                                                <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                    <label class="col-form-label col-sm-auto s_website_form_label"
+                                                           style="width: 200px"
+                                                           for="limit_date">
+                                                        <span class="s_website_form_label_content">Limit Date:</span>
+                                                    </label>
+                                                    <div class="col-sm">
+                                                        <input id="limit_date"
+                                                               type="date"
+                                                               t-att-value="limit_date"
+                                                               placeholder="limit_date"
+                                                               class="form-control s_website_form_input"
+                                                               required="required"
+                                                               name="limit_date"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                             <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom"
                                                  data-type="char" data-name="Field">
                                                 <div class="row s_col_no_resize s_col_no_bgcolor">
@@ -67,99 +191,11 @@
                                                 </div>
                                             </div>
 
-                                            <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom"
-                                                 data-type="char" data-name="Field">
-                                                <div class="row s_col_no_resize s_col_no_bgcolor">
-                                                    <label class="col-form-label col-sm-auto s_website_form_label"
-                                                           style="width: 200px"
-                                                           for="cpu">
-                                                        <span class="s_website_form_label_content">CPU:</span>
-                                                    </label>
-                                                    <div class="col-sm">
-                                                        <input id="cpu"
-                                                               type="text"
-                                                               t-att-value="cpu"
-                                                               placeholder="CPU"
-                                                               class="form-control s_website_form_input"
-                                                               required="required"
-                                                               name="cpu"/>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom"
-                                                 data-type="char" data-name="Field">
-                                                <div class="row s_col_no_resize s_col_no_bgcolor">
-                                                    <label class="col-form-label col-sm-auto s_website_form_label"
-                                                           style="width: 200px"
-                                                           for="ram">
-                                                        <span class="s_website_form_label_content">RAM:</span>
-                                                    </label>
-                                                    <div class="col-sm">
-                                                        <input id="ram"
-                                                               type="text"
-                                                               t-att-value="ram"
-                                                               placeholder="RAM"
-                                                               class="form-control s_website_form_input"
-                                                               required="required"
-                                                               name="ram"/>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom"
-                                                 data-type="char" data-name="Field">
-                                                <div class="row s_col_no_resize s_col_no_bgcolor">
-                                                    <label class="col-form-label col-sm-auto s_website_form_label"
-                                                           style="width: 200px"
-                                                           for="disk">
-                                                        <span class="s_website_form_label_content">DISK:</span>
-                                                    </label>
-                                                    <div class="col-sm">
-                                                        <input id="disk"
-                                                               type="text"
-                                                               t-att-value="disk"
-                                                               placeholder="DISK"
-                                                               class="form-control s_website_form_input"
-                                                               required="required"
-                                                               name="disk"/>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom"
-                                                 data-type="char" data-name="Field">
-                                                <div class="row s_col_no_resize s_col_no_bgcolor">
-                                                    <label class="col-form-label col-sm-auto s_website_form_label"
-                                                           style="width: 200px"
-                                                           for="limit_date">
-                                                        <span class="s_website_form_label_content">LIMIT DATE:</span>
-                                                    </label>
-                                                    <div class="col-sm">
-                                                        <input id="limit_date"
-                                                               type="date"
-                                                               t-att-value="limit_date"
-                                                               placeholder="LIMIT DATE"
-                                                               class="form-control s_website_form_input"
-                                                               required="required"
-                                                               name="limit_date"/>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom"
-                                                 data-type="char"
-                                                 data-name="Field">
-                                                <div class="row s_col_no_resize s_col_no_bgcolor">
-
-                                                    <div class="col-sm">
-                                                        <button type="submit" class="btn btn-primary pull-left">
-                                                            Create
-                                                        </button>
-                                                    </div>
-                                                </div>
+                                            <div class="mb-0 py-2 col-5 s_website_form_submit"
+                                                 data-name="Submit Button">
+                                                <div style="width: 200px;" class="s_website_form_label"/>
+                                                <button type="submit" class="btn btn-primary pull-left">Create
+                                                </button>
                                             </div>
                                         </form>
                                     </div>
@@ -172,41 +208,56 @@
         </t>
     </template>
 
-    <record id="instance_thanks" model="website.page">
-        <field name="name">Thanks</field>
+    <record id="instance_created" model="website.page">
+        <field name="name">Created</field>
         <field name="type">qweb</field>
-        <field name="url">/instance-thank-you</field>
+        <field name="url">/instance-created</field>
         <field name="website_published">True</field>
-        <field name="key">kzm_instance_creation_portal.instance_thanks</field>
+        <field name="key">kzm_instance_creation_portal.instance_created</field>
         <field name="arch" type="xml">
-            <t t-call="website.layout">
-                <div id="wrap">
-                    <div class="container">
-                        <h1>Thanks!</h1>
-                        <div class="row">
-                            <div class="col-lg-8">
-                                <div class="alert alert-success" role="status">
-                                    Your request has been sent successfully
+            <t name="Created" t-name="kzm_instance_creation_portal.instance_created">
+                <t t-call="website.layout">
+                    <div id="wrap">
+                        <div class="container">
+                            <h1>Instance created</h1>
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="alert alert-succes" role="status">
+                                        Your instance has been created successfully.
+                                    </div>
                                 </div>
-                                <p>
-                                    we will get back to you shortly
-                                </p>
-
                             </div>
                         </div>
                     </div>
-                </div>
+                </t>
             </t>
         </field>
     </record>
 
-    <template id="portal_all_instances" name="Portal My Home : Instance" inherit_id="portal.portal_my_home" >
+
+    <!-- Put 'My instance' in 'my account' and display his submenu -->
+    <template id="portal_my_home_instance" name="Show Instances" customize_show="True"
+              inherit_id="portal.portal_my_home">
         <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
             <t t-call="portal.portal_docs_entry">
-                <t t-set="title">Instances</t>
-                <t t-set="url" t-value="'/my/instance'"/>
-                <t t-set="placeholder_count" t-value="'count_instances'"/>
+                <t t-set="title">My instances</t>
+                <t t-set="url" t-value="'/list'"/>
+                <t t-set="placeholder_count" t-value="'instances_count'"/>
             </t>
         </xpath>
     </template>
+
+    <template id="portal_my_home_menu_instance" name="Portal layout : instance menu entries"
+              inherit_id="portal.portal_breadcrumbs" priority="20">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'instance'" t-attf-class="breadcrumb-item #{'active ' if not instance else ''}">
+                <a t-if="instance" t-attf-href="/list?{{ keep_query() }}">Instances</a>
+                <t t-else="">Instances</t>
+            </li>
+            <li t-if="instance" class="breadcrumb-item active">
+                <t t-out="instance.name"/>
+            </li>
+        </xpath>
+    </template>
+
 </odoo>
